@@ -1,0 +1,83 @@
+import java.util.Arrays;
+
+public class TSPBruteForce {
+
+    public static int findShortestTour(int[][] distances) {
+        int n = distances.length;
+        int[] cities = new int[n];
+        for (int i = 0; i < n; i++) {
+            cities[i] = i;
+        }
+
+        int[] shortestTour = null;
+        int shortestDistance = Integer.MAX_VALUE;
+
+        do {
+            int currentDistance = calculateTourDistance(cities, distances);
+            if (currentDistance < shortestDistance) {
+                shortestDistance = currentDistance;
+                shortestTour = Arrays.copyOf(cities, n);
+            }
+        } while (nextPermutation(cities));
+
+        // Output the shortest tour
+        System.out.println("Shortest Tour: " + Arrays.toString(shortestTour));
+        System.out.println("Shortest Distance: " + shortestDistance);
+
+        return shortestDistance;
+    }
+
+    public static int calculateTourDistance(int[] tour, int[][] distances) {
+        int distance = 0;
+        int prevCity = tour[tour.length - 1];
+        for (int city : tour) {
+            distance += distances[prevCity][city];
+            prevCity = city;
+        }
+        return distance;
+    }
+
+    public static boolean nextPermutation(int[] arr) {
+        int i = arr.length - 2;
+        while (i >= 0 && arr[i] > arr[i + 1]) {
+            i--;
+        }
+        if (i == -1) {
+            return false; // No next permutation
+        }
+
+        int j = arr.length - 1;
+        while (arr[j] < arr[i]) {
+            j--;
+        }
+
+        swap(arr, i, j);
+        reverse(arr, i + 1, arr.length - 1);
+        return true;
+    }
+
+    public static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    public static void reverse(int[] arr, int start, int end) {
+        while (start < end) {
+            swap(arr, start, end);
+            start++;
+            end--;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] distances = {
+            {0, 29, 20, 21},
+            {29, 0, 15, 12},
+            {20, 15, 0, 25},
+            {21, 12, 25, 0}
+        };
+
+        int shortestDistance = findShortestTour(distances);
+    }
+}
