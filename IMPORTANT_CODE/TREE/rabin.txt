@@ -1,0 +1,7 @@
+class Solution:
+    def search(self, pattern, text):
+        bb=[]
+        for i in range(len(text)-len(pattern)+1):
+            if text[i:i+len(pattern)] == pattern:
+                bb.append(i+1)
+        return bb

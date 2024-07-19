@@ -1,0 +1,21 @@
+from collections import deque
+
+def findSpiral(root_node):
+    queue = deque()
+    queue.append(root_node)
+    stack = []
+    out = []
+    while queue or stack:
+        while queue:
+            val = queue.popleft()
+            if val:
+                out.append(val.data)
+                stack.append(val.right)
+                stack.append(val.left)
+        while stack:
+            val = stack.pop()
+            if val:
+                out.append(val.data)
+                queue.appendleft(val.left)
+                queue.appendleft(val.right)
+    return out

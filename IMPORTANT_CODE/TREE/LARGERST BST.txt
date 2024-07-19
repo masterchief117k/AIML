@@ -1,0 +1,26 @@
+class Solution:
+    # Return the size of the largest sub-tree which is also a BST
+    
+    def helper(self , root):
+        if root is None:
+            return (1 , 0 , float('inf') , float('-inf'))
+            
+        if root.left is None and root.right is None:
+            return (1 , 1 , root.data , root.data)
+            
+        ls = self.helper(root.left)
+        rs = self.helper(root.right)
+        
+        if ls[0] == rs[0] and ls[3] < root.data < rs[2]:
+            
+            min_val = root.data if ls[2] == float('inf') else ls[2]
+            max_val = root.data if rs[3] == float('-inf') else rs[3]
+            
+            return (1 , 1+ls[1]+rs[1] , min_val , max_val)
+            
+        return (0 , max(ls[1] , rs[1]) , 0 , 0)
+                
+                
+    def largestBst(self, root):
+        
+        return self.helper(root)[1]
